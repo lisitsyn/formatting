@@ -1,6 +1,7 @@
 Formatting is a simple header-only C++ library to format strings with
 automatic type inference. It resembles (with some simplifications though) 
-the SLF4J Java library and Python's format method.
+the SLF4J Java library and Python's format method. The library is distributed
+with almost no restrictions due to BSD 2-clause license.
 
 The simplest example of usage is:
 
