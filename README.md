@@ -15,3 +15,5 @@ and include them. There is an attempt to avoid using compiler-specific in the co
 and it is supposed to be portable enough. In case of any troubles with the code 
 please don't hesitate to fire 
 [an issue at github](https://github.com/lisitsyn/formatting/issues/new).
+
+This project uses [Travis CI](https://travis-ci.org/lisitsyn/formatting).
