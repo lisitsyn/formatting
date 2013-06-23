@@ -1,0 +1,15 @@
+language: cpp
+compiler:
+    - gcc
+    - clang
+branches:
+    only:
+        - master
+before_install:
+    - cd build
+    - cmake -DCMAKE_BUILD_TYPE=Debug ..
+script: make
+after_success: ctest -VV
+notifications:
+    email:
+        on_failure: always
