@@ -31,6 +31,7 @@
 #include <stdexcept>
 #include <sstream>
 
+#include <formatting/wrappers.hpp>
 #include <formatting/implementations.hpp>
 
 namespace formatting
