@@ -19,6 +19,8 @@ TEST(Wrappers,Oct)
 TEST(Wrappers,Raw)
 {
 	std::string result;
-	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::raw(reinterpret_cast<size_t*>(0xDEADBEEF))));
+	const size_t deadbeef = 0xDEADBEEF;
+	const int* ptr = (int*)deadbeef;
+	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::raw(ptr)));
 	ASSERT_STREQ(result.c_str(),"hey 0xDEADBEEF howdy");
 }

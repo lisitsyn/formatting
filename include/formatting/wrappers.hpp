@@ -27,14 +27,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <limits>
+
 namespace formatting
 {
+
+namespace utils
+{
+	template <bool> struct compile_time_assert;
+	template <> struct compile_time_assert<true> {};
+}
 
 namespace wrappers 
 {
 	template <typename T>
 	struct HexWrapper
 	{
+		utils::compile_time_assert<std::numeric_limits<T>::is_integer> HEX_USED_FOR_NON_INTEGER_TYPE;
 		explicit HexWrapper(T value) : value_(value) { }
 		T value_;
 
@@ -51,6 +60,7 @@ namespace wrappers
 	template <typename T>
 	struct OctWrapper
 	{
+		utils::compile_time_assert<std::numeric_limits<T>::is_integer> OCT_USED_FOR_NON_INTEGER_TYPE;
 		explicit OctWrapper(T value) : value_(value) { }
 		T value_;
 
@@ -97,10 +107,21 @@ wrappers::OctWrapper<T> oct(T value)
  *
  * @param value a pointer to be represented as hex
  */
-template<typename T>
-wrappers::HexWrapper<T> raw(T* value) 
+wrappers::HexWrapper<size_t> raw(void* value) 
 {
-	return wrappers::HexWrapper<T>(reinterpret_cast<T>(value));
+	size_t ptr = reinterpret_cast<size_t>(value);
+	return wrappers::HexWrapper<size_t>(ptr);
+}
+
+/** Returns a wrapper that makes the provided
+ * pointer represented as hex value of a pointer.
+ *
+ * @param value a pointer to be represented as hex
+ */
+wrappers::HexWrapper<size_t> raw(const void* value) 
+{
+	size_t ptr = reinterpret_cast<size_t>(value);
+	return wrappers::HexWrapper<size_t>(ptr);
 }
 
 }
