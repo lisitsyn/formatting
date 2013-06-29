@@ -45,7 +45,7 @@ namespace wrappers
 	{
 		utils::compile_time_assert<std::numeric_limits<T>::is_integer> HEX_USED_FOR_NON_INTEGER_TYPE;
 		explicit HexWrapper(T value) : value_(value) { }
-		T value_;
+		const T value_;
 
 		template <typename U>
 		friend std::ostream& operator<<(std::ostream& out, const HexWrapper<U>& h);
@@ -62,7 +62,7 @@ namespace wrappers
 	{
 		utils::compile_time_assert<std::numeric_limits<T>::is_integer> OCT_USED_FOR_NON_INTEGER_TYPE;
 		explicit OctWrapper(T value) : value_(value) { }
-		T value_;
+		const T value_;
 
 		template <typename U>
 		friend std::ostream& operator<<(std::ostream& out, const HexWrapper<U>& h);
@@ -74,6 +74,82 @@ namespace wrappers
 		out << "0" << std::oct << std::uppercase << h.value_;
 	}
 
+	template <typename T>
+	struct WidthWrapper
+	{
+		explicit WidthWrapper(unsigned int width, T value) : value_(value), width_(width) { }
+		const T value_;
+		const unsigned int width_;
+
+		template <typename U>
+		friend std::ostream& operator<<(std::ostream& out, const WidthWrapper& h);
+	};
+
+	template <typename T>
+	std::ostream& operator<<(std::ostream& out, const WidthWrapper<T>& h)
+	{
+		out << std::setw(h.width_) << h.value_;
+	}
+
+	struct WidthWrapperBuilder
+	{
+		explicit WidthWrapperBuilder(unsigned int width) : width_(width) { }
+		unsigned int width_;
+
+		template <typename T>
+		inline WidthWrapper<T> operator()(T value)
+		{
+			return WidthWrapper<T>(width_,value);
+		}
+	};
+
+	struct WidthWrapperBuilderHelper
+	{
+		inline wrappers::WidthWrapperBuilder operator[](unsigned int w) const
+		{
+			return wrappers::WidthWrapperBuilder(w);
+		}
+	};
+
+	template <typename T>
+	struct PrecisionWrapper
+	{
+		utils::compile_time_assert<std::numeric_limits<T>::is_specialized> PRECISION_USED_FOR_NON_NUMERIC_TYPE;
+		explicit PrecisionWrapper(unsigned int precision, T value) : value_(value), precision_(precision) { }
+		const T value_;
+		const unsigned int precision_;
+
+		template <typename U>
+		friend std::ostream& operator<<(std::ostream& out, const PrecisionWrapper& h);
+	};
+
+	template <typename T>
+	std::ostream& operator<<(std::ostream& out, const PrecisionWrapper<T>& h)
+	{
+		out << std::setprecision(h.precision_) << h.value_;
+	}
+
+	struct PrecisionWrapperBuilder
+	{
+		explicit PrecisionWrapperBuilder(unsigned int precision) : precision_(precision) { }
+		unsigned int precision_;
+
+		template <typename T>
+		inline PrecisionWrapper<T> operator()(T value)
+		{
+			return PrecisionWrapper<T>(precision_,value);
+		}
+	};
+
+	struct PrecisionWrapperBuilderHelper
+	{
+		inline wrappers::PrecisionWrapperBuilder operator[](unsigned int p) const
+		{
+			return wrappers::PrecisionWrapperBuilder(p);
+		}
+	};
+
+
 }
 
 /** Returns a wrapper that makes the provided 
@@ -84,7 +160,7 @@ namespace wrappers
  * @param value a numerical value to be presented as hex
  */
 template<typename T>
-wrappers::HexWrapper<T> hex(T value) 
+inline wrappers::HexWrapper<T> hex(T value) 
 {
 	return wrappers::HexWrapper<T>(value);
 }
@@ -97,7 +173,7 @@ wrappers::HexWrapper<T> hex(T value)
  * @param value a numerical value to be presented as oct
  */
 template<typename T>
-wrappers::OctWrapper<T> oct(T value)
+inline wrappers::OctWrapper<T> oct(T value)
 {
 	return wrappers::OctWrapper<T>(value);
 }
@@ -107,7 +183,7 @@ wrappers::OctWrapper<T> oct(T value)
  *
  * @param value a pointer to be represented as hex
  */
-wrappers::HexWrapper<size_t> raw(void* value) 
+inline wrappers::HexWrapper<size_t> raw(void* value) 
 {
 	size_t ptr = reinterpret_cast<size_t>(value);
 	return wrappers::HexWrapper<size_t>(ptr);
@@ -118,10 +194,21 @@ wrappers::HexWrapper<size_t> raw(void* value)
  *
  * @param value a pointer to be represented as hex
  */
-wrappers::HexWrapper<size_t> raw(const void* value) 
+inline wrappers::HexWrapper<size_t> raw(const void* value) 
 {
 	size_t ptr = reinterpret_cast<size_t>(value);
 	return wrappers::HexWrapper<size_t>(ptr);
 }
+
+/** Width wrapper helper that allows to set output width
+ * with the brackets operator (e.g. width[3]('c') => "  c").
+ */
+static const wrappers::WidthWrapperBuilderHelper width;
+
+/** Precision wrapper helper that allows to set output 
+ * precision with the brackets operator 
+ * (e.g. precision[6](2.718281828) => "2.71828")
+ */
+static const wrappers::PrecisionWrapperBuilderHelper precision;
 
 }

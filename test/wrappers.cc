@@ -24,3 +24,17 @@ TEST(Wrappers,Raw)
 	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::raw(ptr)));
 	ASSERT_STREQ(result.c_str(),"hey 0xDEADBEEF howdy");
 }
+
+TEST(Wrappers,Width)
+{
+	std::string result;
+	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::width[4](3)));
+	ASSERT_STREQ(result.c_str(),"hey    3 howdy");
+}
+
+TEST(Wrappers,Precision)
+{
+	std::string result;
+	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::precision[6](2.718281828)));
+	ASSERT_STREQ(result.c_str(),"hey 2.71828 howdy");
+}
