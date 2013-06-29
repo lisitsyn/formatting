@@ -58,12 +58,14 @@ TEST(Types,UnsignedLong)
 }
 TEST(Types,Float)
 {
+	formatting::default_precision = 9;
 	std::string result;
 	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", static_cast<float>(2.123456)));
 	ASSERT_STREQ(result.c_str(),"hey 2.123456 howdy");
 }
 TEST(Types,Double)
 {
+	formatting::default_precision = 9;
 	std::string result;
 	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", static_cast<double>(3.14159265)));
 	ASSERT_STREQ(result.c_str(),"hey 3.14159265 howdy");

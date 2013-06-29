@@ -29,11 +29,15 @@
 
 namespace formatting
 {
+	/** Default precision - be careful to change due to no thread safety */
+	static unsigned int default_precision = 9;
+
 	namespace formatting_internal
 	{
 		class FormatTypeStringifier
 		{
 		public:
+			virtual ~FormatTypeStringifier() { }
 			virtual std::string str() const = 0;
 		};
 
@@ -42,16 +46,16 @@ namespace formatting
 			public FormatTypeStringifier
 		{
 		public:
-			FormatTypeStringifierImpl(T value) :
+			FormatTypeStringifierImpl(const T& value) :
 				value_(value) { }
-			virtual std::string str() const
+			inline virtual std::string str() const
 			{
 				std::stringstream ss;
-				ss << std::setprecision(9) << value_;
+				ss << std::setprecision(default_precision) << value_;
 				return ss.str();
 			}
 		private:
-			T value_;
+			const T value_;
 		};
 
 		template <>
@@ -61,7 +65,7 @@ namespace formatting
 		public:
 			FormatTypeStringifierImpl(const char* value) :
 				value_(value) { }
-			virtual std::string str() const
+			inline virtual std::string str() const
 			{
 				return std::string(value_);
 			}
@@ -76,7 +80,7 @@ namespace formatting
 		public:
 			FormatTypeStringifierImpl(bool value) :
 				value_(value) { }
-			virtual std::string str() const
+			inline virtual std::string str() const
 			{
 				return value_ ? "true" : "false";
 			}
@@ -89,14 +93,14 @@ namespace formatting
 			public FormatTypeStringifier
 		{
 		public:
-			FormatTypeStringifierImpl(std::string value) :
+			FormatTypeStringifierImpl(const std::string& value) :
 				value_(value) { }
-			virtual std::string str() const
+			inline virtual std::string str() const
 			{
 				return value_;
 			}
 		private:
-			std::string value_;
+			const std::string value_;
 		};
 
 		template <typename T>
@@ -106,14 +110,14 @@ namespace formatting
 		public:
 			FormatTypeStringifierImpl(T* value) :
 				value_(value) { }
-			virtual std::string str() const
+			inline virtual std::string str() const
 			{
 				std::stringstream ss;
 				ss << *value_;
 				return ss.str();
 			}
 		private:
-			T* value_;
+			const T* value_;
 		};
 	}
 }

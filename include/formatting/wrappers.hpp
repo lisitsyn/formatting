@@ -55,6 +55,7 @@ namespace wrappers
 	std::ostream& operator<<(std::ostream& out, const HexWrapper<T>& h)
 	{
 		out << "0x" << std::hex << std::uppercase << h.value_;
+		return out;
 	}
 
 	template <typename T>
@@ -72,6 +73,7 @@ namespace wrappers
 	std::ostream& operator<<(std::ostream& out, const OctWrapper<T>& h)
 	{
 		out << "0" << std::oct << std::uppercase << h.value_;
+		return out;
 	}
 
 	template <typename T>
@@ -89,6 +91,7 @@ namespace wrappers
 	std::ostream& operator<<(std::ostream& out, const WidthWrapper<T>& h)
 	{
 		out << std::setw(h.width_) << h.value_;
+		return out;
 	}
 
 	struct WidthWrapperBuilder
@@ -105,6 +108,7 @@ namespace wrappers
 
 	struct WidthWrapperBuilderHelper
 	{
+		WidthWrapperBuilderHelper() { }
 		inline wrappers::WidthWrapperBuilder operator[](unsigned int w) const
 		{
 			return wrappers::WidthWrapperBuilder(w);
@@ -127,6 +131,7 @@ namespace wrappers
 	std::ostream& operator<<(std::ostream& out, const PrecisionWrapper<T>& h)
 	{
 		out << std::setprecision(h.precision_) << h.value_;
+		return out;
 	}
 
 	struct PrecisionWrapperBuilder
@@ -143,6 +148,7 @@ namespace wrappers
 
 	struct PrecisionWrapperBuilderHelper
 	{
+		PrecisionWrapperBuilderHelper() { }
 		inline wrappers::PrecisionWrapperBuilder operator[](unsigned int p) const
 		{
 			return wrappers::PrecisionWrapperBuilder(p);
