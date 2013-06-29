@@ -32,40 +32,40 @@ namespace formatting
 	/** Default precision - be careful to change due to no thread safety */
 	static unsigned int default_precision = 9;
 
-	namespace formatting_internal
+	namespace internal
 	{
-		class FormatTypeStringifier
+		class ValueWrapperImplementationBase
 		{
 		public:
-			virtual ~FormatTypeStringifier() { }
-			virtual std::string str() const = 0;
+			virtual ~ValueWrapperImplementationBase() { }
+			virtual std::string representation() const = 0;
 		};
 
 		template <typename T>
-		class FormatTypeStringifierImpl : 
-			public FormatTypeStringifier
+		class ValueWrapperImplementation : 
+			public ValueWrapperImplementationBase
 		{
 		public:
-			FormatTypeStringifierImpl(const T& value) :
+			ValueWrapperImplementation(const T& value) :
 				value_(value) { }
-			inline virtual std::string str() const
+			virtual std::string representation() const
 			{
-				std::stringstream ss;
-				ss << std::setprecision(default_precision) << value_;
-				return ss.str();
+				std::stringstream string_stream;
+				string_stream << std::setprecision(default_precision) << value_;
+				return string_stream.str();
 			}
 		private:
 			const T value_;
 		};
 
 		template <>
-		class FormatTypeStringifierImpl<const char*> :
-			public FormatTypeStringifier
+		class ValueWrapperImplementation<const char*> :
+			public ValueWrapperImplementationBase
 		{
 		public:
-			FormatTypeStringifierImpl(const char* value) :
+			ValueWrapperImplementation(const char* value) :
 				value_(value) { }
-			inline virtual std::string str() const
+			virtual std::string representation() const
 			{
 				return std::string(value_);
 			}
@@ -74,13 +74,13 @@ namespace formatting
 		};
 		
 		template <>
-		class FormatTypeStringifierImpl<bool> :
-			public FormatTypeStringifier
+		class ValueWrapperImplementation<bool> :
+			public ValueWrapperImplementationBase
 		{
 		public:
-			FormatTypeStringifierImpl(bool value) :
+			ValueWrapperImplementation(bool value) :
 				value_(value) { }
-			inline virtual std::string str() const
+			virtual std::string representation() const
 			{
 				return value_ ? "true" : "false";
 			}
@@ -89,13 +89,13 @@ namespace formatting
 		};
 
 		template <>
-		class FormatTypeStringifierImpl<std::string> :
-			public FormatTypeStringifier
+		class ValueWrapperImplementation<std::string> :
+			public ValueWrapperImplementationBase
 		{
 		public:
-			FormatTypeStringifierImpl(const std::string& value) :
+			ValueWrapperImplementation(const std::string& value) :
 				value_(value) { }
-			inline virtual std::string str() const
+			virtual std::string representation() const
 			{
 				return value_;
 			}
@@ -104,17 +104,17 @@ namespace formatting
 		};
 
 		template <typename T>
-		class FormatTypeStringifierImpl<T*> :
-			public FormatTypeStringifier
+		class ValueWrapperImplementation<T*> :
+			public ValueWrapperImplementationBase
 		{
 		public:
-			FormatTypeStringifierImpl(T* value) :
+			ValueWrapperImplementation(const T* value) :
 				value_(value) { }
-			inline virtual std::string str() const
+			virtual std::string representation() const
 			{
-				std::stringstream ss;
-				ss << *value_;
-				return ss.str();
+				std::stringstream string_stream;
+				string_stream << *value_;
+				return string_stream.str();
 			}
 		private:
 			const T* value_;

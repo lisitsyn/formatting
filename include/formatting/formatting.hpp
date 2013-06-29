@@ -38,7 +38,7 @@ namespace formatting
 {
 	static const int WORLD_VERSION = 0;
 	static const int MAJOR_VERSION = 1;
-	static const int MINOR_VERSION = 0;
+	static const int MINOR_VERSION = 1;
 
 	/** The placeholder of formatter. */
 	const std::string placeholder = "{}";
@@ -46,7 +46,7 @@ namespace formatting
 	/** A class that provides a wrapper with ability
 	 * to stringify the value it is created from.
 	 */
-	class FormatTypeHandler;
+	class ValueWrapper;
 
 	/** An error that is thrown in case of wrong number of placeholders 
 	 * in the formatting string.
@@ -70,7 +70,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains one {} placeholder.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @return new string with provided parameters put instead
@@ -79,7 +79,7 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a);
+			const ValueWrapper a);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -91,7 +91,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 2 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -102,7 +102,7 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b);
+			const ValueWrapper a, const ValueWrapper b);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -114,7 +114,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 3 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -127,8 +127,8 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -140,7 +140,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 4 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -155,8 +155,8 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -168,7 +168,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 5 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -185,9 +185,9 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -199,7 +199,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 6 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -218,9 +218,9 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -232,7 +232,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 7 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -253,10 +253,10 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -268,7 +268,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 8 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -291,10 +291,10 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g, const FormatTypeHandler h);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g, const ValueWrapper h);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -306,7 +306,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 9 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -331,11 +331,11 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g, const FormatTypeHandler h,
-			const FormatTypeHandler i);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g, const ValueWrapper h,
+			const ValueWrapper i);
 
 	/** Constructs a string using the provided formatting string and
 	 * arguments. Essentially, replaces all placeholders ("{}") in the 
@@ -347,7 +347,7 @@ namespace formatting
 	 * Doesn't change the formatting string.
 	 * Uses no shared state thus supposed to be thread-safe.
 	 *
-	 * @param fmt the formatting string.
+	 * @param fmt the formatting string that contains 10 {} placeholders.
 	 * @param a any variable which type has the stream insertion operator
 	 *        (operator<<) implemented. 
 	 * @param b any variable which type has the stream insertion operator
@@ -374,139 +374,144 @@ namespace formatting
 	 *        the number of provided parameters
 	 */
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g, const FormatTypeHandler h,
-			const FormatTypeHandler i, const FormatTypeHandler j);
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g, const ValueWrapper h,
+			const ValueWrapper i, const ValueWrapper j);
 
 	/** Internal namespace that contains implementations. */
-	namespace formatting_internal
+	namespace internal
 	{
-		/** Stringifier that is used by @ref FormatTypeHandler.
+		/** Implementation that is used by @ref ValueWrapper.
 		 * It is able to convert the underlying value to string. */
-		class FormatTypeStringifier;
+		class ValueWrapperImplementationBase;
 
 		/** Generic implementation of formatting. */
-		std::string formatImpl(const std::string& fmt, const FormatTypeHandler** handlers, std::size_t n_handlers);
+		std::string formatImplementation(const std::string& formatting, 
+		                                 const ValueWrapper** handlers,
+		                                 std::size_t n_handlers);
 	}
 
-	class FormatTypeHandler
+	class ValueWrapper
 	{
 	public:
-		template<typename T> FormatTypeHandler(T v);
-		FormatTypeHandler();
-		FormatTypeHandler(const FormatTypeHandler& fth);
-		~FormatTypeHandler();
-		std::string str() const;
+		template<typename T> ValueWrapper(T value);
+		ValueWrapper();
+		ValueWrapper(const ValueWrapper& wrapper);
+		~ValueWrapper();
+		std::string representation() const;
 	private:
-		formatting_internal::FormatTypeStringifier* impl_;
+		formatting::internal::ValueWrapperImplementationBase* implementation_;
 	};
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a) 
+			const ValueWrapper a) 
 	{
-		const FormatTypeHandler* handlers[] = {&a};
-		return formatting_internal::formatImpl(fmt, handlers, 1);
+		const ValueWrapper* handlers[] = {&a};
+		return formatting::internal::formatImplementation(fmt, handlers, 1);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b)
+			const ValueWrapper a, const ValueWrapper b)
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b};
-		return formatting_internal::formatImpl(fmt, handlers, 2);
+		const ValueWrapper* handlers[] = {&a, &b};
+		return formatting::internal::formatImplementation(fmt, handlers, 2);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b,
-			const FormatTypeHandler c)
+			const ValueWrapper a, const ValueWrapper b,
+			const ValueWrapper c)
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c};
-		return formatting_internal::formatImpl(fmt, handlers, 3);
+		const ValueWrapper* handlers[] = {&a, &b, &c};
+		return formatting::internal::formatImplementation(fmt, handlers, 3);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b,
-			const FormatTypeHandler c, const FormatTypeHandler d)
+			const ValueWrapper a, const ValueWrapper b,
+			const ValueWrapper c, const ValueWrapper d)
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c, &d};
-		return formatting_internal::formatImpl(fmt, handlers, 4);
+		const ValueWrapper* handlers[] = {&a, &b, &c, &d};
+		return formatting::internal::formatImplementation(fmt, handlers, 4);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e) 
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e) 
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c, &d, &e};
-		return formatting_internal::formatImpl(fmt, handlers, 5);
+		const ValueWrapper* handlers[] = {&a, &b, &c, &d, &e};
+		return formatting::internal::formatImplementation(fmt, handlers, 5);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f) 
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f) 
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c, &d, &e, &f};
-		return formatting_internal::formatImpl(fmt, handlers, 6);
+		const ValueWrapper* handlers[] = {&a, &b, &c, &d, &e, &f};
+		return formatting::internal::formatImplementation(fmt, handlers, 6);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g) 
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g) 
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c, &d, &e, &f, &g};
-		return formatting_internal::formatImpl(fmt, handlers, 7);
+		const ValueWrapper* handlers[] = {&a, &b, &c, &d, &e, &f, &g};
+		return formatting::internal::formatImplementation(fmt, handlers, 7);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g, const FormatTypeHandler h) 
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g, const ValueWrapper h) 
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c, &d, &e, &f, &g, &h};
-		return formatting_internal::formatImpl(fmt, handlers, 8);
+		const ValueWrapper* handlers[] = {&a, &b, &c, &d, &e, &f, &g, &h};
+		return formatting::internal::formatImplementation(fmt, handlers, 8);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g, const FormatTypeHandler h,
-			const FormatTypeHandler i) 
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g, const ValueWrapper h,
+			const ValueWrapper i) 
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c, &d, &e, &f, &g, &h, &i};
-		return formatting_internal::formatImpl(fmt, handlers, 9);
+		const ValueWrapper* handlers[] = {&a, &b, &c, &d, &e, &f, &g, &h, &i};
+		return formatting::internal::formatImplementation(fmt, handlers, 9);
 	}
 
 	std::string format(const std::string& fmt, 
-			const FormatTypeHandler a, const FormatTypeHandler b, 
-			const FormatTypeHandler c, const FormatTypeHandler d,
-			const FormatTypeHandler e, const FormatTypeHandler f,
-			const FormatTypeHandler g, const FormatTypeHandler h,
-			const FormatTypeHandler i, const FormatTypeHandler j) 
+			const ValueWrapper a, const ValueWrapper b, 
+			const ValueWrapper c, const ValueWrapper d,
+			const ValueWrapper e, const ValueWrapper f,
+			const ValueWrapper g, const ValueWrapper h,
+			const ValueWrapper i, const ValueWrapper j) 
 	{
-		const FormatTypeHandler* handlers[] = {&a, &b, &c, &d, &e, &f, &g, &h, &i, &j};
-		return formatting_internal::formatImpl(fmt, handlers, 10);
+		const ValueWrapper* handlers[] = {&a, &b, &c, &d, &e, &f, &g, &h, &i, &j};
+		return formatting::internal::formatImplementation(fmt, handlers, 10);
 	}
 
-	namespace formatting_internal
+	namespace internal
 	{
-		std::string formatImpl(const std::string& fmt, const FormatTypeHandler** handlers, std::size_t n_handlers) 
+		std::string formatImplementation(const std::string& formatter_string,
+		                                 const ValueWrapper** handlers,
+		                                 std::size_t n_handlers) 
 		{
-			std::string formatted = fmt;
+			std::string formatted = formatter_string;
 			std::size_t placeholder_position = 0; 
 			for (std::size_t i=0; i<n_handlers; i++)
 			{
 				placeholder_position = formatted.find(placeholder, placeholder_position);
 				if (placeholder_position != std::string::npos)
 				{
-					const std::string str = handlers[i]->str();
-					formatted.replace(placeholder_position,placeholder.length(),str,0,std::string::npos);
-					placeholder_position += str.length();
+					const std::string representation = handlers[i]->representation();
+					formatted.replace(placeholder_position,placeholder.length(),
+					                  representation,0,std::string::npos);
+					placeholder_position += representation.length();
 				}
 				else
 					throw formatting_error("The number of placeholders doesn't match the number of provided arguments");
@@ -516,28 +521,28 @@ namespace formatting
 	}
 
 	template<typename T>
-	FormatTypeHandler::FormatTypeHandler(T v) : 
-		impl_(new formatting_internal::FormatTypeStringifierImpl<T>(v))
+	ValueWrapper::ValueWrapper(T v) : 
+		implementation_(new formatting::internal::ValueWrapperImplementation<T>(v))
 	{
 	}
 
-	FormatTypeHandler::FormatTypeHandler() :
-		impl_(new formatting_internal::FormatTypeStringifierImpl<const char*>("invalid argument"))
+	ValueWrapper::ValueWrapper() :
+		implementation_(new formatting::internal::ValueWrapperImplementation<const char*>("invalid argument"))
 	{
 	}
 
-	FormatTypeHandler::FormatTypeHandler(const FormatTypeHandler& fth) : 
-		impl_(fth.impl_)
+	ValueWrapper::ValueWrapper(const ValueWrapper& wrapper) : 
+		implementation_(wrapper.implementation_)
 	{
 	}
 
-	FormatTypeHandler::~FormatTypeHandler() 
+	ValueWrapper::~ValueWrapper() 
 	{
-		delete impl_;
+		delete implementation_;
 	}
 
-	std::string FormatTypeHandler::str() const 
+	std::string ValueWrapper::representation() const 
 	{
-		return impl_->str();
+		return implementation_->representation();
 	}
 }
