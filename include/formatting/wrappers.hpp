@@ -28,6 +28,7 @@
  */
 
 #include <limits>
+#include <iomanip>
 
 namespace formatting
 {
