@@ -83,9 +83,11 @@ namespace wrappers
 	template <typename T>
 	struct WidthWrapper
 	{
-		explicit WidthWrapper(unsigned int width, T value) : value_(value), width_(width) { }
+		explicit WidthWrapper(unsigned int width, char filler, T value) :
+			value_(value), width_(width), filler_(filler) { }
 		const T value_;
 		const unsigned int width_;
+		const char filler_;
 
 		template <typename U>
 		friend std::ostream& operator<<(std::ostream& out, const WidthWrapper& h);
@@ -94,19 +96,20 @@ namespace wrappers
 	template <typename T>
 	std::ostream& operator<<(std::ostream& out, const WidthWrapper<T>& h)
 	{
-		out << std::setw(h.width_) << h.value_;
+		out << std::setw(h.width_) << std::setfill(h.filler_) << h.value_;
 		return out;
 	}
 
 	struct WidthWrapperBuilder
 	{
-		explicit WidthWrapperBuilder(unsigned int width) : width_(width) { }
+		explicit WidthWrapperBuilder(unsigned int width) : 
+			width_(width) { }
 		unsigned int width_;
 
 		template <typename T>
-		inline WidthWrapper<T> operator()(T value)
+		inline WidthWrapper<T> operator()(T value, char filler=' ')
 		{
-			return WidthWrapper<T>(width_,value);
+			return WidthWrapper<T>(width_,filler,value);
 		}
 	};
 

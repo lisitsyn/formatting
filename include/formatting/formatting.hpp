@@ -40,8 +40,8 @@
 namespace formatting
 {
 	static const int WORLD_VERSION = 0;
-	static const int MAJOR_VERSION = 1;
-	static const int MINOR_VERSION = 2;
+	static const int MAJOR_VERSION = 2;
+	static const int MINOR_VERSION = 0;
 
 	/** The placeholder of formatter. */
 	const std::string placeholder = "{}";

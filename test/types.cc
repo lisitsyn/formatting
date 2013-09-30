@@ -58,16 +58,14 @@ TEST(Types,UnsignedLong)
 }
 TEST(Types,Float)
 {
-	formatting::default_precision = 9;
 	std::string result;
-	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", static_cast<float>(2.123456)));
+	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::precision[9](static_cast<float>(2.123456))));
 	ASSERT_STREQ(result.c_str(),"hey 2.123456 howdy");
 }
 TEST(Types,Double)
 {
-	formatting::default_precision = 9;
 	std::string result;
-	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", static_cast<double>(3.14159265)));
+	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::precision[9](static_cast<double>(3.14159265))));
 	ASSERT_STREQ(result.c_str(),"hey 3.14159265 howdy");
 }
 TEST(Types,String)
@@ -88,4 +86,14 @@ TEST(Types,Pointer)
 	int int_var = 3;
 	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", static_cast<int*>(&int_var)));
 	ASSERT_STREQ(result.c_str(),"hey 3 howdy");
+}
+TEST(Types,Vector)
+{
+	std::string result;
+	std::vector<int> vec;
+	vec.push_back(10);
+	vec.push_back(101);
+	vec.push_back(99);
+	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", static_cast< std::vector<int> >(vec)));
+	ASSERT_STREQ(result.c_str(),"hey [10, 101, 99] howdy");
 }

@@ -30,6 +30,8 @@
 #ifndef FORMATTING_IMPLEMENTATIONS_H_
 #define FORMATTING_IMPLEMENTATIONS_H_
 
+#include <vector>
+
 namespace formatting
 {
 	/** Default precision - be careful to change due to no thread safety */
@@ -121,6 +123,27 @@ namespace formatting
 			}
 		private:
 			const T* value_;
+		};
+
+		template <typename T>
+		class ValueWrapperImplementation< std::vector<T> > :
+			public ValueWrapperImplementationBase
+		{
+			public:
+				ValueWrapperImplementation(const std::vector<T>& vector) :
+					vector_(vector) { }
+				virtual std::string representation() const
+				{
+					std::stringstream string_stream;
+					string_stream << "[";
+					for (size_t i=0; i<vector_.size()-1; i++)
+						string_stream << vector_[i] << ", ";
+					string_stream << vector_[vector_.size()-1];
+					string_stream << "]";
+					return string_stream.str();
+				}
+			private:
+				const std::vector<T> vector_;
 		};
 	}
 }

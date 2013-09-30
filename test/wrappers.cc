@@ -32,6 +32,13 @@ TEST(Wrappers,Width)
 	ASSERT_STREQ(result.c_str(),"hey    3 howdy");
 }
 
+TEST(Wrappers,WidthFill)
+{
+	std::string result;
+	ASSERT_NO_THROW(result = formatting::format("hey {} howdy", formatting::width[4](3,'_')));
+	ASSERT_STREQ(result.c_str(),"hey ___3 howdy");
+}
+
 TEST(Wrappers,Precision)
 {
 	std::string result;
