@@ -7,6 +7,11 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 include_directories(${FORMATTER_INCLUDE_DIR})
 
+option(C++11 "Use C++11" OFF)
+if (C++11)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif()
+
 if(MSVC)
 	# Force to always compile with W4
 	if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
@@ -63,3 +68,4 @@ if (BUILD_TESTS)
 	endforeach()
 endif()
 
+add_executable(benchmark source/benchmark.cpp)

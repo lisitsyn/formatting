@@ -30,6 +30,11 @@
 #ifndef FORMATTING_H_
 #define FORMATTING_H_
 
+#define FMTG_INLINE inline
+#if __cplusplus > 199711L
+	#define FMTG_USE_CXX11
+#endif
+
 #include <string>
 #include <stdexcept>
 #include <sstream>
@@ -37,10 +42,11 @@
 #include <formatting/wrappers.hpp>
 #include <formatting/implementations.hpp>
 
+
 namespace formatting
 {
 	static const int WORLD_VERSION = 0;
-	static const int MAJOR_VERSION = 2;
+	static const int MAJOR_VERSION = 3;
 	static const int MINOR_VERSION = 0;
 
 	/** The placeholder of formatter. */
@@ -90,23 +96,23 @@ namespace formatting
 		{
 			delete implementation_;
 		}
-		inline std::string representation() const
+		FMTG_INLINE std::string representation() const
 		{
 			return implementation_->representation();
 		}
 	private:
-		formatting::internal::ValueWrapperImplementationBase* implementation_;
+		const formatting::internal::ValueWrapperImplementationBase* const implementation_;
 	};
 	
 	namespace internal
 	{
 		namespace
 		{
-			std::string formatImplementation(const std::string& formatter_string,
+			std::string formatImplementation(const std::string& formatter,
 											 const ValueWrapper** handlers,
 											 std::size_t n_handlers) 
 			{
-				std::string formatted = formatter_string;
+				std::string formatted = formatter;
 				std::size_t placeholder_position = 0; 
 				for (std::size_t i=0; i<n_handlers; i++)
 				{
@@ -115,7 +121,7 @@ namespace formatting
 					{
 						const std::string representation = handlers[i]->representation();
 						formatted.replace(placeholder_position,placeholder.length(),
-										  representation,0,std::string::npos);
+										  representation);
 						placeholder_position += representation.length();
 					}
 					else
@@ -144,7 +150,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a) 
 	{
 		const ValueWrapper* handlers[] = {&a};
@@ -171,7 +177,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b)
 	{
 		const ValueWrapper* handlers[] = {&a, &b};
@@ -200,7 +206,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b,
 			const ValueWrapper& c)
 	{
@@ -232,7 +238,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b,
 			const ValueWrapper& c, const ValueWrapper& d)
 	{
@@ -266,7 +272,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b, 
 			const ValueWrapper& c, const ValueWrapper& d,
 			const ValueWrapper& e) 
@@ -303,7 +309,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b, 
 			const ValueWrapper& c, const ValueWrapper& d,
 			const ValueWrapper& e, const ValueWrapper& f) 
@@ -342,7 +348,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b, 
 			const ValueWrapper& c, const ValueWrapper& d,
 			const ValueWrapper& e, const ValueWrapper& f,
@@ -384,7 +390,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b, 
 			const ValueWrapper& c, const ValueWrapper& d,
 			const ValueWrapper& e, const ValueWrapper& f,
@@ -428,7 +434,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b, 
 			const ValueWrapper& c, const ValueWrapper& d,
 			const ValueWrapper& e, const ValueWrapper& f,
@@ -475,7 +481,7 @@ namespace formatting
 	 * @throw formatting_error in case the number of placeholders doesn't match
 	 *        the number of provided parameters
 	 */
-	inline std::string format(const std::string& fmt, 
+	FMTG_INLINE std::string format(const std::string& fmt, 
 			const ValueWrapper& a, const ValueWrapper& b, 
 			const ValueWrapper& c, const ValueWrapper& d,
 			const ValueWrapper& e, const ValueWrapper& f,

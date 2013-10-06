@@ -34,11 +34,119 @@
 
 namespace formatting
 {
-	/** Default precision - be careful to change due to no thread safety */
-	static unsigned int default_precision = 9;
-
 	namespace internal
 	{
+		namespace
+		{
+
+			template <typename T, bool special> 
+			struct GenericIfSpecial
+			{
+			};
+			template <typename T> 
+			struct GenericIfSpecial<T,true>
+			{
+				FMTG_INLINE std::string operator()(const T& value) const
+				{
+#ifdef FMTG_USE_CXX11
+					return std::to_string(value);
+#else
+					std::stringstream string_stream;
+					string_stream << value;
+					return string_stream.str();
+#endif
+				}
+			};
+			template <typename T> 
+			struct GenericIfSpecial<T,false>
+			{
+				FMTG_INLINE std::string operator()(const T& value) const
+				{
+					std::stringstream string_stream;
+					string_stream << value;
+					return string_stream.str();
+				}
+			};
+
+			template <typename T, typename U>
+			struct is_same
+			{
+				enum { value = 0 };
+			};
+			template <typename T>
+			struct is_same<T,T>
+			{
+				enum { value = 1 };
+			};
+			template <typename T>
+			struct is_char
+			{
+				enum { value = is_same<char, T>::value || 
+				               is_same<signed char, T>::value || 
+				               is_same<unsigned char, T>::value };
+			};
+
+			template <typename T>
+			struct dispatchImplementation
+			{
+				FMTG_INLINE std::string operator()(const T& value) const 
+				{
+					return GenericIfSpecial<T,
+						   std::numeric_limits<T>::is_specialized && 
+						   !is_char<T>::value 
+						>()(value);
+				}
+			};
+			template <typename T>
+			struct dispatchImplementation< std::vector<T> >
+			{
+				FMTG_INLINE std::string operator()(const std::vector<T>& vector_) const 
+				{
+					std::stringstream string_stream;
+					string_stream << "[";
+					for (size_t i=0; i<vector_.size()-1; i++)
+						string_stream << vector_[i] << ", ";
+					string_stream << vector_[vector_.size()-1];
+					string_stream << "]";
+					return string_stream.str();
+				}
+			};
+			template <typename T>
+			struct dispatchImplementation<T*>
+			{
+				FMTG_INLINE std::string operator()(T* value) const 
+				{
+					std::stringstream string_stream;
+					string_stream << *value;
+					return string_stream.str();
+				}
+			};
+			template <>
+			struct dispatchImplementation<std::string>
+			{
+				FMTG_INLINE std::string operator()(const std::string& value) const 
+				{
+					return value;
+				}
+			};
+			template <>
+			struct dispatchImplementation<const char*>
+			{
+				FMTG_INLINE std::string operator()(const char* const value) const 
+				{
+					return value;
+				}
+			};
+			template <>
+			struct dispatchImplementation<bool>
+			{
+				FMTG_INLINE std::string operator()(bool value) const 
+				{
+					return value ? "true" : "false";
+				}
+			};
+		}
+
 		class ValueWrapperImplementationBase
 		{
 		public:
@@ -53,97 +161,12 @@ namespace formatting
 		public:
 			ValueWrapperImplementation(const T& value) :
 				value_(value) { }
-			virtual std::string representation() const
+			FMTG_INLINE virtual std::string representation() const 
 			{
-				std::stringstream string_stream;
-				string_stream << std::setprecision(default_precision) << value_;
-				return string_stream.str();
+				return dispatchImplementation<T>()(value_);
 			}
 		private:
 			const T value_;
-		};
-
-		template <>
-		class ValueWrapperImplementation<const char*> :
-			public ValueWrapperImplementationBase
-		{
-		public:
-			ValueWrapperImplementation(const char* value) :
-				value_(value) { }
-			virtual std::string representation() const
-			{
-				return std::string(value_);
-			}
-		private:
-			const char* value_;
-		};
-		
-		template <>
-		class ValueWrapperImplementation<bool> :
-			public ValueWrapperImplementationBase
-		{
-		public:
-			ValueWrapperImplementation(bool value) :
-				value_(value) { }
-			virtual std::string representation() const
-			{
-				return value_ ? "true" : "false";
-			}
-		private:
-			bool value_;
-		};
-
-		template <>
-		class ValueWrapperImplementation<std::string> :
-			public ValueWrapperImplementationBase
-		{
-		public:
-			ValueWrapperImplementation(const std::string& value) :
-				value_(value) { }
-			virtual std::string representation() const
-			{
-				return value_;
-			}
-		private:
-			const std::string value_;
-		};
-
-		template <typename T>
-		class ValueWrapperImplementation<T*> :
-			public ValueWrapperImplementationBase
-		{
-		public:
-			ValueWrapperImplementation(const T* value) :
-				value_(value) { }
-			virtual std::string representation() const
-			{
-				std::stringstream string_stream;
-				string_stream << *value_;
-				return string_stream.str();
-			}
-		private:
-			const T* value_;
-		};
-
-		template <typename T>
-		class ValueWrapperImplementation< std::vector<T> > :
-			public ValueWrapperImplementationBase
-		{
-			public:
-				ValueWrapperImplementation(const std::vector<T>& vector) :
-					vector_(vector) { }
-				virtual std::string representation() const
-				{
-					std::stringstream string_stream;
-					string_stream << "[";
-					for (size_t i=0; i<vector_.size()-1; i++)
-						string_stream << vector_[i] << ", ";
-					string_stream << vector_[vector_.size()-1];
-					string_stream << "]";
-					return string_stream.str();
-				}
-			private:
-				const std::vector<T> vector_;
 		};
 	}
 }
