@@ -1,4 +1,4 @@
-* This library is deprecated *
+*This library is deprecated*
 
 Formatting is a simple header-only C++ library to format strings with
 automatic type inference. It resembles (with some simplifications though) 
